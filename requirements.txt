@@ -1,0 +1,18 @@
+# --- backend ---
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+numpy>=1.26
+scikit-learn>=1.4
+# --- simulator / clients ---
+httpx>=0.27
+# --- web dashboard ---
+streamlit>=1.37
+pandas>=2.1
+plotly>=5.20
+# --- mobile app ---
+flet>=0.25,<0.28
+bleak>=0.22
+plyer>=2.1
+# --- tests ---
+pytest>=8.0
