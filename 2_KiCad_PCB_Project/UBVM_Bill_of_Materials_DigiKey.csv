@@ -1,0 +1,22 @@
+Designator,Quantity,Component Name,Value / Rating,Manufacturer,Manufacturer Part Number,Footprint / Package,Subsystem Role
+U1,1,BLE 5.0 & ARM Cortex-M4 MCU,64 MHz / 1MB Flash,STMicroelectronics,STM32WB55RGV6,VFQFPN-68 (8x8mm),Generates 2MHz complementary pulses & captures echo timestamps via DMA
+U2,1,Dual 4-Channel Analog Multiplexer,+/-5V Supply,Analog Devices / Maxim,DG409CUE+,TSSOP-16,Routes DINP & DINN trigger bursts to MAX14808 channels 1-4
+U3,1,Quad High-Voltage Pulser & T/R Switch,+/-20V to +/-30V Output,Analog Devices / Maxim,MAX14808ETK+,TQFN-68 (10x10mm),Excites PZT transducers & isolates low-voltage receive echoes on LVOUT1-4
+U4,1,Single 8-Channel Analog Multiplexer,+/-5V Supply,Analog Devices / Maxim,DG408CUE+,TSSOP-16,Routes selected LVOUT1-4 echo channel into OPA357 amplifier
+U5,1,High-Speed Operational Amplifier,100 MHz GBW,Texas Instruments,OPA357AIDBVT,SOT-23-6,Amplifies raw bladder wall echo signal by Gain = 10
+U6,1,Low-Power High-Speed Comparator,5V Single Supply,Analog Devices / Maxim,MAX941CSA+,SOIC-8,1-bit ADC threshold detector with Schmitt-trigger hysteresis
+U7,1,Dual Micropower Boost / Inverting DC-DC,+20V and -20V Output,Analog Devices,LT3463EDD#PBF,DFN-10 (3x3mm),Generates +20V and -20V HV rails for MAX14808 from 3.7V LiPo
+U8,1,Low-Noise Dual Regulated Charge Pump/LDO,+5V and -5V Output,Texas Instruments,LM27762DSSR,WSON-12,Generates low-noise +5V and -5V rails for OPA357 / DG408 / DG409 / MAX941
+U9,1,Low-Dropout Regulator (+3.3V),3.3V / 500mA,Texas Instruments,TLV75533PDBVR,SOT-23-5,Generates +3.3V rail for STM32WB55RG and logic inputs
+U10,1,Low-Dropout Regulator (+2.5V),2.5V / 500mA,Texas Instruments,TLV75525PDBVR,SOT-23-5,Generates +2.5V reference rail
+R1,1,Amplifier Input Resistor,1 kOhm 0.1% 1/10W,Yageo,RT0402BRD071KL,0402 (1005 Metric),Sets OPA357 voltage gain (Rf/Rin = 10k/1k = 10)
+R2,1,Amplifier Feedback Resistor,10 kOhm 0.1% 1/10W,Yageo,RT0402BRD0710KL,0402 (1005 Metric),Sets OPA357 voltage gain = 10
+R3,1,Low-Pass Filter Series Resistor,270 Ohm 1% 1/10W,Yageo,RC0402FR-07270RL,0402 (1005 Metric),Forms 5.88 MHz RC low-pass filter with C1 (fc = 5.89 MHz)
+C1,1,Low-Pass Filter Shunt Capacitor,100 pF 50V C0G/NP0,Murata,GRM1555C1H101JA01D,0402 (1005 Metric),Forms 5.88 MHz RC low-pass filter with R3
+R4,1,Comparator Upper Divider Resistor,20 kOhm 1% 1/10W,Yageo,RC0402FR-0720KL,0402 (1005 Metric),Series divider between +5V and GND for MAX941 hysteresis
+R5,1,Comparator Lower Divider Resistor,20 kOhm 1% 1/10W,Yageo,RC0402FR-0720KL,0402 (1005 Metric),Series divider between +5V and GND for MAX941 hysteresis
+R6,1,Comparator Hysteresis Feedback Resistor,60.4 kOhm 1% 1/10W,Yageo,RC0402FR-0760K4L,0402 (1005 Metric),Feeds MAX941 output back to IN+ pin to set hysteresis band
+C2-C11,10,HV & Logic Decoupling Capacitors,0.1 uF & 10 uF 50V X7R,Samsung Electro-Mechanics,CL10B104KB8NNNC,0603 (1608 Metric),Supply decoupling for MAX14808, OPA357, and STM32WB55RG
+J1,1,5-Pin FPC Connector (0.5mm Pitch),5 Pos Right Angle,Molex,52746-0571,SMD 0.5mm Pitch,Connects Main PCB to 3x3cm Flexible Transducer Patch
+J2,1,LiPo Battery Connector,2 Pos 2.0mm Pitch,JST Sales America,S2B-PH-SM4-TB(LF)(SN),SMD JST-PH-2,Connects 3.7V LiPo battery to PMIC input
+PZT1-PZT4,4,PZT-5A Piezoceramic Discs,2 MHz Thickness Mode,American Piezo (APC),APC-850-2MHz-Disc,Custom Wrap-Around Electrode,Air-backed ultrasonic transducers on flexible polyimide patch

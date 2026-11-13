@@ -1,0 +1,236 @@
+Model {
+  Name                    "UBVM_Universal_System"
+  Version                 8.6
+  Solver                  "ode4"
+  FixedStep               "1e-8"
+  StopTime                "150e-6"
+  System {
+    Name                  "UBVM_Universal_System"
+    Location              [50, 50, 1450, 750]
+    Block {
+      BlockType           DiscretePulseGenerator
+      Name                "2MHz_Carrier"
+      Ports               [0, 1]
+      Position            [40, 60, 90, 100]
+      PulseType           "Time based"
+      Amplitude           "40"
+      Period              "0.5e-6"
+      PulseWidth          "50"
+    }
+    Block {
+      BlockType           Constant
+      Name                "DC_Offset_20V"
+      Position            [40, 125, 80, 155]
+      Value               "-20"
+    }
+    Block {
+      BlockType           Sum
+      Name                "Bipolar_Shift"
+      Ports               [2, 1]
+      Position            [120, 75, 150, 115]
+      Inputs              "++"
+    }
+    Block {
+      BlockType           Step
+      Name                "5_Cycle_Gate_2p5us"
+      Position            [120, 145, 150, 175]
+      Time                "2.5e-6"
+      Before              "1"
+      After               "0"
+    }
+    Block {
+      BlockType           Product
+      Name                "MAX14808_Pulser"
+      Ports               [2, 1]
+      Position            [190, 90, 225, 135]
+    }
+    Block {
+      BlockType           TransferFcn
+      Name                "AirBacked_PZT_2MHz"
+      Position            [265, 85, 395, 140]
+      Numerator           "[2704, 0, 0]"
+      Denominator         "[8.1225e-10, 2.964e-03, 0.27067, 4.8678e+08, 2.1954e+19]"
+    }
+    Block {
+      BlockType           Gain
+      Name                "TR_Switch_Leakage"
+      Position            [450, 35, 510, 65]
+      Gain                "0.012"
+    }
+    Block {
+      BlockType           TransportDelay
+      Name                "Anterior_Wall_32us"
+      Position            [450, 95, 490, 125]
+      DelayTime           "32e-6"
+    }
+    Block {
+      BlockType           Gain
+      Name                "Anterior_Atten"
+      Position            [520, 95, 580, 125]
+      Gain                "0.00075"
+    }
+    Block {
+      BlockType           TransportDelay
+      Name                "Posterior_Wall_138us"
+      Position            [450, 160, 490, 190]
+      DelayTime           "138e-6"
+    }
+    Block {
+      BlockType           Gain
+      Name                "Posterior_Atten"
+      Position            [520, 160, 580, 190]
+      Gain                "0.00028"
+    }
+    Block {
+      BlockType           Sum
+      Name                "LVOUT_Node"
+      Ports               [3, 1]
+      Position            [625, 70, 660, 210]
+      Inputs              "+++"
+    }
+    Block {
+      BlockType           TransferFcn
+      Name                "OPA357_Amp_Gain10"
+      Position            [700, 115, 800, 165]
+      Numerator           "[10]"
+      Denominator         "[1.5915e-08, 1]"
+    }
+    Block {
+      BlockType           TransferFcn
+      Name                "RC_LPF_5p88MHz"
+      Position            [840, 115, 940, 165]
+      Numerator           "[1]"
+      Denominator         "[2.7068e-08, 1]"
+    }
+    Block {
+      BlockType           Relay
+      Name                "MAX941_Comparator"
+      Position            [990, 120, 1035, 160]
+      OnSwitchValue       "0.038"
+      OffSwitchValue      "0.012"
+      OnOutputValue       "5.0"
+      OffOutputValue      "0.0"
+    }
+    Block {
+      BlockType           Scope
+      Name                "UBVM_Oscilloscope"
+      Ports               [3]
+      Position            [1110, 75, 1155, 145]
+      NumInputPorts       "3"
+    }
+    Line {
+      SrcBlock            "2MHz_Carrier"
+      SrcPort             1
+      DstBlock            "Bipolar_Shift"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "DC_Offset_20V"
+      SrcPort             1
+      DstBlock            "Bipolar_Shift"
+      DstPort             2
+    }
+    Line {
+      SrcBlock            "Bipolar_Shift"
+      SrcPort             1
+      DstBlock            "MAX14808_Pulser"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "5_Cycle_Gate_2p5us"
+      SrcPort             1
+      DstBlock            "MAX14808_Pulser"
+      DstPort             2
+    }
+    Line {
+      SrcBlock            "MAX14808_Pulser"
+      SrcPort             1
+      DstBlock            "AirBacked_PZT_2MHz"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "AirBacked_PZT_2MHz"
+      SrcPort             1
+      DstBlock            "TR_Switch_Leakage"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "AirBacked_PZT_2MHz"
+      SrcPort             1
+      DstBlock            "Anterior_Wall_32us"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "AirBacked_PZT_2MHz"
+      SrcPort             1
+      DstBlock            "Posterior_Wall_138us"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "Anterior_Wall_32us"
+      SrcPort             1
+      DstBlock            "Anterior_Atten"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "Posterior_Wall_138us"
+      SrcPort             1
+      DstBlock            "Posterior_Atten"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "TR_Switch_Leakage"
+      SrcPort             1
+      DstBlock            "LVOUT_Node"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "Anterior_Atten"
+      SrcPort             1
+      DstBlock            "LVOUT_Node"
+      DstPort             2
+    }
+    Line {
+      SrcBlock            "Posterior_Atten"
+      SrcPort             1
+      DstBlock            "LVOUT_Node"
+      DstPort             3
+    }
+    Line {
+      SrcBlock            "LVOUT_Node"
+      SrcPort             1
+      DstBlock            "OPA357_Amp_Gain10"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "OPA357_Amp_Gain10"
+      SrcPort             1
+      DstBlock            "RC_LPF_5p88MHz"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "RC_LPF_5p88MHz"
+      SrcPort             1
+      DstBlock            "MAX941_Comparator"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "MAX14808_Pulser"
+      SrcPort             1
+      DstBlock            "UBVM_Oscilloscope"
+      DstPort             1
+    }
+    Line {
+      SrcBlock            "RC_LPF_5p88MHz"
+      SrcPort             1
+      DstBlock            "UBVM_Oscilloscope"
+      DstPort             2
+    }
+    Line {
+      SrcBlock            "MAX941_Comparator"
+      SrcPort             1
+      DstBlock            "UBVM_Oscilloscope"
+      DstPort             3
+    }
+  }
+}
