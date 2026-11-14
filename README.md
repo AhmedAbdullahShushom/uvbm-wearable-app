@@ -1,4 +1,4 @@
-# BladderSense - microgravity bladder monitoring (Python stack)
+# know when to go - microgravity bladder monitoring (Python stack)
 
 ```
  patch (BLE/Wi-Fi) -> FastAPI backend -> volume math -> filling-rate ML -> alerts
